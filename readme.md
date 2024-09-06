@@ -4,8 +4,7 @@ This repository contains various projects that demonstrate how to use Convolutio
 
 
 - [Project Overview](#project-overview)
-- [Current Projects](#current-projects)
-  - [MNIST Digit Classification](#mnist-digit-classification)
+  - [MNIST Digit Classification](#1-mnist-digit-classification)
   - [CIFAR-10 Image Classification](#cifar-10-image-classification)
   - [Cats vs. Dogs Classification](#cats-vs-dogs-classification)
   - [Traffic Sign Classification](#traffic-sign-classification)
