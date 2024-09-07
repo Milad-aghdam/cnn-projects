@@ -50,7 +50,7 @@ for epoch in range(num_epochs):
     train_correct = 0
     train_total = 0
 
-    for x_batch, y_batch in DataLoader:
+    for x_batch, y_batch in train_loader:
         x_batch, y_batch= x_batch.to(device), y_batch.to(device)
         outputs = model(x_batch)
 
@@ -102,3 +102,22 @@ for epoch in range(num_epochs):
     print(f"Epoch [{epoch+1}/{num_epochs}], "
           f"Train Loss: {running_loss / len(train_loader):.4f}, Train Accuracy: {train_accuracy:.2f}%, "
           f"Validation Loss: {val_loss / len(val_loader):.4f}, Validation Accuracy: {val_accuracy:.2f}%")
+
+
+model.eval()  # Set the model to evaluation mode
+test_loss = 0.0
+correct = 0
+total = 0
+with torch.no_grad():
+    for test_images, test_labels in test_loader:
+        test_images, test_labels = test_images.to(device), test_labels.to(device)
+        test_outputs = model(test_images)
+        test_loss += criterion(test_outputs, test_labels).item()
+
+        # Calculate test accuracy
+        _, predicted = torch.max(test_outputs, 1)
+        total += test_labels.size(0)
+        correct += (predicted == test_labels).sum().item()
+
+test_accuracy = 100 * correct / total
+print(f"Test Accuracy: {test_accuracy:.2f}%")

@@ -1,47 +1,40 @@
 import torch
-import torch.nn as nn 
+import torch.nn as nn
 
-class CnnModel(nn.Module):
+class CnnModel(nn.Module):  # Ensure it inherits from nn.Module
     def __init__(self, input_channels=1, num_classes=10):
         super(CnnModel, self).__init__()
-        # First Convolutional Layer: 
-        # - Input channels: 1 (for grayscale images like MNIST)
-        # - Output channels: 32 (number of filters)
-        # - Kernel size: 3x3
+
+        # First Convolutional Layer
         self.conv1 = nn.Conv2d(in_channels=input_channels, out_channels=32, kernel_size=3, padding=1)
 
-        # Second Convolutional Layer: 
-        # - Input channels: 32 (from the output of conv1)
-        # - Output channels: 64
-        # - Kernel size: 3x3
+        # Second Convolutional Layer
         self.conv2 = nn.Conv2d(in_channels=32, out_channels=64, kernel_size=3, padding=1)
 
-        # Pooling layer to downsample after convolutions
+        # Pooling layer to downsample
         self.pool = nn.MaxPool2d(kernel_size=2, stride=2)
 
-        # Fully connected layer
-        # Assuming the input image size is 28x28 (MNIST size), after two 2x2 pooling operations,
-        # the spatial size will be reduced to 7x7.
-        # 64 filters of size 7x7 will be the input to the fully connected layer.
+        # Fully connected layer, assuming input image size is 28x28
         self.fc1 = nn.Linear(in_features=64 * 7 * 7, out_features=128)
 
-        # Output layer: 10 output classes for MNIST digits (0-9)
+        # Output layer: num_classes controls the number of output classes
         self.fc2 = nn.Linear(in_features=128, out_features=num_classes)
 
-        def forward(self, x):
-            # 1st Conv Layer + ReLU + Pooling
-            x = self.pool(torch.relu(self.conv1(x)))  # Output: 32 channels, 14x14
-            
-            # 2nd Conv Layer + ReLU + Pooling
-            x = self.pool(torch.relu(self.conv2(x)))  # Output: 64 channels, 7x7
-            
-            # Flatten for fully connected layer
-            x = x.view(-1, 64 * 7 * 7)
-            
-            # 1st Fully Connected Layer + ReLU
-            x = torch.relu(self.fc1(x))
-            
-            # Output Layer (for classification)
-            x = self.fc2(x)
-            
-            return x
+    # The forward method must be defined for every nn.Module
+    def forward(self, x):
+        # Apply the first convolution, followed by ReLU activation and pooling
+        x = self.pool(torch.relu(self.conv1(x)))
+
+        # Apply the second convolution, followed by ReLU activation and pooling
+        x = self.pool(torch.relu(self.conv2(x)))
+
+        # Flatten the tensor for the fully connected layer
+        x = x.view(-1, 64 * 7 * 7)  # Flatten the tensor to (batch_size, 64*7*7)
+
+        # Apply the fully connected layers
+        x = torch.relu(self.fc1(x))
+
+        # Final output layer (no activation here as it's usually applied outside for classification)
+        x = self.fc2(x)
+
+        return x  # Return the output

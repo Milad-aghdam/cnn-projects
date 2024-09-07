@@ -17,5 +17,5 @@ class CustomMNISTDataset(Dataset):
         if self.transform:
             image = self.transform(image)
         
-        print(f"Image shape: {image.shape}, Label shape: {label}")
+        # print(f"Image shape: {image.shape}, Label shape: {label}")
         return image, label
