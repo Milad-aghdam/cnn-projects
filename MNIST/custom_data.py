@@ -4,8 +4,8 @@ from torchvision import datasets, transforms
 from torch.utils.data import Dataset, DataLoader
 
 class CustomMNISTDataset(Dataset):
-    def __init__(self, train=True, transform=None):
-        self.mnist_data = datasets.MNIST(root='./MNIST/data', train=train, download=True)
+    def __init__(self, train=True, transform=None, root='./MNIST/data'):
+        self.mnist_data = datasets.MNIST(root=root , train=train, download=True)
         self.transform = transform
 
     def __len__(self):

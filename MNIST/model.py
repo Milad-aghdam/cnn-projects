@@ -1,14 +1,14 @@
 import torch
 import torch.nn as nn 
 
-class CnnModel(nn.Model):
-    def __init__(self):
+class CnnModel(nn.Module):
+    def __init__(self, input_channels=1, num_classes=10):
         super(CnnModel, self).__init__()
         # First Convolutional Layer: 
         # - Input channels: 1 (for grayscale images like MNIST)
         # - Output channels: 32 (number of filters)
         # - Kernel size: 3x3
-        self.conv1 = nn.Conv2d(in_channels=1, out_channels=32, kernel_size=3, padding=1)
+        self.conv1 = nn.Conv2d(in_channels=input_channels, out_channels=32, kernel_size=3, padding=1)
 
         # Second Convolutional Layer: 
         # - Input channels: 32 (from the output of conv1)
@@ -26,7 +26,7 @@ class CnnModel(nn.Model):
         self.fc1 = nn.Linear(in_features=64 * 7 * 7, out_features=128)
 
         # Output layer: 10 output classes for MNIST digits (0-9)
-        self.fc2 = nn.Linear(in_features=128, out_features=10)
+        self.fc2 = nn.Linear(in_features=128, out_features=num_classes)
 
         def forward(self, x):
             # 1st Conv Layer + ReLU + Pooling
