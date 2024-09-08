@@ -20,6 +20,10 @@ This repository is designed to demonstrate the step-by-step learning of Convolut
 
 The first project in this series uses a CNN to classify handwritten digits (0-9) from the **MNIST** dataset. This project is designed to introduce the basics of CNNs for image classification.
 
+### 2. CIFAR-10 Image Classification
+
+CIFAR-10 consists of 60,000 images (32x32 pixels) divided into 10 classes: airplanes, cars, birds, cats, deer, dogs, frogs, horses, ships, and trucks. Each class has 6,000 images.
+
 ## Requirements
 
 Make sure you have the following dependencies installed to run any of the projects:
