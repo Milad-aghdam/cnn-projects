@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import torch
-from torchvision import datasets, transforms
-from torch.utils.data import Dataset, DataLoader
+from torchvision import datasets
+from torch.utils.data import Dataset
 
 class CustomMNISTDataset(Dataset):
     def __init__(self, train=True, transform=None, root='./MNIST/data'):
@@ -12,10 +12,10 @@ class CustomMNISTDataset(Dataset):
         return len(self.mnist_data)
 
     def __getitem__(self, idx):
-        image, label = self.mnist_data[idx]
+        image, lable  = self.mnist_data[idx]
 
         if self.transform:
             image = self.transform(image)
         
-        # print(f"Image shape: {image.shape}, Label shape: {label}")
-        return image, label
+        # print(f"Image shape: {image.shape}, lable  shape: {label}")
+        return image, lable
