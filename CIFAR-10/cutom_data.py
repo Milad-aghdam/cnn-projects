@@ -5,7 +5,7 @@ from torch.utils.data import Dataset
 
 
 class CustomCifarDataset(Dataset):
-    def __init__(self, train=True, transform=None, root="./CIFAR-10/data"):
+    def __init__(self, train=True, transform=None, root="./data"):
         self.cifar_data = datasets.CIFAR10(root=root, train=train, download=True)
         self.transform = transform
 

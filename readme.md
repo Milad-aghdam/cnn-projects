@@ -5,7 +5,7 @@ This repository contains various projects that demonstrate how to use Convolutio
 
 - [Project Overview](#project-overview)
   - [MNIST Digit Classification](#1-mnist-digit-classification)
-  - [CIFAR-10 Image Classification](#cifar-10-image-classification)
+  - [CIFAR-10 Image Classification](#2-cifar-10-image-classification)
   - [Cats vs. Dogs Classification](#cats-vs-dogs-classification)
   - [Traffic Sign Classification](#traffic-sign-classification)
   - [Image Segmentation or Object Detection](#image-segmentation-or-object-detection)
