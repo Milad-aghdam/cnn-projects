@@ -6,7 +6,7 @@ This repository contains various projects that demonstrate how to use Convolutio
 - [Project Overview](#project-overview)
   - [MNIST Digit Classification](#1-mnist-digit-classification)
   - [CIFAR-10 Image Classification](#2-cifar-10-image-classification)
-  - [Cats vs. Dogs Classification](#cats-vs-dogs-classification)
+  - [Cats vs. Dogs Classification](#3-cats-vs-dogs-classification)
   - [Traffic Sign Classification](#traffic-sign-classification)
   - [Image Segmentation or Object Detection](#image-segmentation-or-object-detection)
 - [Requirements](#requirements)
@@ -23,6 +23,9 @@ The first project in this series uses a CNN to classify handwritten digits (0-9)
 ### 2. CIFAR-10 Image Classification
 
 CIFAR-10 consists of 60,000 images (32x32 pixels) divided into 10 classes: airplanes, cars, birds, cats, deer, dogs, frogs, horses, ships, and trucks. Each class has 6,000 images.
+
+### 3. Cats vs. Dogs Classification
+ This dataset contains 25,000 images of cats and dogs. our goal is to classify whether an image contains a cat or a dog.
 
 ## Requirements
 
