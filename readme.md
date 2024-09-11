@@ -25,9 +25,10 @@ The first project in this series uses a CNN to classify handwritten digits (0-9)
 CIFAR-10 consists of 60,000 images (32x32 pixels) divided into 10 classes: airplanes, cars, birds, cats, deer, dogs, frogs, horses, ships, and trucks. Each class has 6,000 images.
 
 ### 3. Cats vs. Dogs Classification
- This dataset contains 25,000 images of cats and dogs. our goal is to classify whether an image contains a cat or a dog.
+This dataset consists of two parts:
 
-## Requirements
+- Training Set: Contains 8,005 images of cats and dogs. The images are organized into two categories: cats (label = 0) and dogs (label = 1). Our goal during training is to correctly classify these images into the appropriate category.
+- Test Set: Contains 2,023 images, also split into cats and dogs. This set is used to evaluate how well the trained model can generalize to unseen data.
 
 Make sure you have the following dependencies installed to run any of the projects:
 
