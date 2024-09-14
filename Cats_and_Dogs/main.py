@@ -5,10 +5,10 @@ from torch.utils.data import DataLoader, random_split
 from torchvision import transforms
 
 import matplotlib.pyplot as plt
-from custom_data import CustomCifarDataset
+from custom_data import CustomCatsDogsDataset
 from model import CnnModel
 
-num_classes = 10  #
+num_classes = 2  #
 batch_size = 64
 num_epochs = 10
 learning_rate = 0.001
@@ -22,31 +22,24 @@ transform = transforms.Compose([
     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))  # Normalization
 ])
 
-train_dataset = CustomCifarDataset(transform=transform)
-train_size = int(0.8 * len(train_dataset)) 
+train_dataset = CustomCatsDogsDataset(root_dir='data/training_set', transform=transform)
+print(len(train_dataset))
+test_dataset = CustomCatsDogsDataset(root_dir='data/test_set', transform=transform)
+print(len(test_dataset))
+
+train_size = int(.70 * len(train_dataset))
 val_size = len(train_dataset) - train_size
 
-random_seed = 42
-generator = torch.Generator().manual_seed(random_seed)
-
-# Perform the split
-train_dataset, val_dataset = random_split(train_dataset, [train_size, val_size], generator=generator)
-
-test_transform = transforms.Compose([
-    transforms.ToTensor(),
-    transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))  # Same normalization as training
-])
-test_dataset = CustomCifarDataset(train=False, transform=test_transform)
+train_dataset, val_dataset = random_split(train_dataset, [train_size, val_size])
 
 
+# Create DataLoader for train, validation, and test sets
 train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
 val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
 test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
 
-
-# Initialize the model, loss function, and optimizer
 model = CnnModel().to(device)
-criterion = nn.CrossEntropyLoss()
+criterion = nn.BCELoss()
 optimizer = optim.Adam(model.parameters(), lr=learning_rate)
 
 train_losses = []
@@ -61,19 +54,19 @@ for epoch in range(num_epochs):
     train_total = 0
 
     for x_batch, y_batch in train_loader:
-        x_batch, y_batch= x_batch.to(device), y_batch.to(device)
+        x_batch, y_batch= x_batch.to(device), y_batch.to(device).float()
         outputs = model(x_batch)
-
         loss_fn = criterion(outputs, y_batch)
-
         optimizer.zero_grad()
         loss_fn.backward()
         optimizer.step()
         running_loss += loss_fn.item()
-         # Track training accuracy
-        _, predicted = torch.max(outputs, 1)  # Get predictions
-        train_total += y_batch.size(0)  # Total number of labels in this batch
-        train_correct += (predicted == y_batch).sum().item()  # Count correct predictions
+
+        predicted = (outputs > 0.5).float()
+
+        # Update accuracy metrics
+        train_total += y_batch.size(0)  # Total number of samples
+        train_correct += (predicted == y_batch).sum().item()  # Correct predictions
 
     train_accuracy = 100 * train_correct / train_total
     train_losses.append(running_loss / len(train_loader))

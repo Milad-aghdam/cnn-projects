@@ -20,7 +20,7 @@ class CnnModel(nn.Module):
         self.pool = nn.MaxPool2d(kernel_size=2, stride=2)
         
         # Adjusted based on your input size, assuming 128x128 input image
-        self.fc1 = nn.Linear(in_features=256 * 8 * 8, out_features=512)  # Adjust based on final feature map size
+        self.fc1 = nn.Linear(256 * 2 * 2, 512)   # Corrected to 16384
         self.dropout1 = nn.Dropout(0.5)
         
         self.fc2 = nn.Linear(in_features=512, out_features=128)
@@ -37,8 +37,11 @@ class CnnModel(nn.Module):
         x = self.pool(torch.relu(self.bn2(self.conv2(x))))
         x = self.pool(torch.relu(self.bn3(self.conv3(x))))
         x = self.pool(torch.relu(self.bn4(self.conv4(x))))
+
+        # Print the shape before flattening
+        # print(f"Shape before flattening: {x.shape}")
         
-        # Flatten the tensor before the fully connected layers
+        # Flatten the tensor
         x = x.view(x.size(0), -1)
         
         x = torch.relu(self.fc1(x))
@@ -51,4 +54,5 @@ class CnnModel(nn.Module):
         x = self.dropout3(x)
         
         x = torch.sigmoid(self.fc4(x))  # Use sigmoid for binary classification
+        x = x.squeeze(1)
         return x

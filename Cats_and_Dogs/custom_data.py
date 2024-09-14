@@ -23,14 +23,14 @@ class CustomCatsDogsDataset():
         cat_dir = os.path.join(self.root_dir, 'cats')
         dog_dir = os.path.join(self.root_dir, 'dogs')
 
-        for file_name  in os.listdir(cat_dir):
+        for file_name in os.listdir(cat_dir):
             if file_name.endswith('.jpg') or file_name.endswith('.png'):  # Make sure we are loading image files
                 self.image_paths.append(os.path.join(cat_dir, file_name))
                 self.labels.append(0)
 
-        for file_name  in os.listdir(dog_dir):
+        for file_name in os.listdir(dog_dir):
             if file_name.endswith('.jpg') or file_name.endswith('.png'):  # Make sure we are loading image files
-                self.image_paths.append(os.path.join(cat_dir, file_name))
+                self.image_paths.append(os.path.join(dog_dir, file_name))
                 self.labels.append(1) 
         
     def __len__(self):
