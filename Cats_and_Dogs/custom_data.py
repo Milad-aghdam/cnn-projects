@@ -1,10 +1,5 @@
-import matplotlib.pyplot as plt
-import torch
-import torchvision 
-from torch.utils.data import Dataset
 from PIL import Image
 import os 
-import numpy as np
 class CustomCatsDogsDataset():
     def __init__(self, root_dir, transform=None):
         """
