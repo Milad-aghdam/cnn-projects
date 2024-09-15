@@ -20,7 +20,7 @@ class CnnModel(nn.Module):
         self.pool = nn.MaxPool2d(kernel_size=2, stride=2)
         
         # Adjusted based on your input size, assuming 128x128 input image
-        self.fc1 = nn.Linear(256 * 2 * 2, 512)   # Corrected to 16384
+        self.fc1 = nn.Linear(256 * 8 * 8, 512)    # Corrected to 16384
         self.dropout1 = nn.Dropout(0.5)
         
         self.fc2 = nn.Linear(in_features=512, out_features=128)

@@ -12,12 +12,13 @@ num_classes = 2  #
 batch_size = 64
 num_epochs = 10
 learning_rate = 0.001
-random_seed = 42  # For reproducibility
+random_seed = 42 
+
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu') 
 
 transform = transforms.Compose([
+    transforms.Resize((128, 128)),  # Resize all images to 128x128
     transforms.RandomHorizontalFlip(),  # Augmentation
-    transforms.RandomCrop(32, padding=4),  # Augmentation
     transforms.ToTensor(),
     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))  # Normalization
 ])
@@ -78,15 +79,28 @@ for epoch in range(num_epochs):
     correct = 0
     total = 0
     with torch.no_grad():  # Disable gradient calculation during validation
+        correct = 0
+        total = 0
+        val_loss = 0.0
         for val_images, val_labels in val_loader:
-            val_images, val_labels = val_images.to(device), val_labels.to(device)
+            val_images, val_labels = val_images.to(device), val_labels.to(device).float()
+            
+            # Forward pass
             val_outputs = model(val_images)
+            
+            # Calculate the loss
             val_loss += criterion(val_outputs, val_labels).item()
 
+            # Get binary predictions (0 or 1) using threshold 0.5
+            predicted = (val_outputs > 0.5).float()
+
             # Calculate validation accuracy
-            _, predicted = torch.max(val_outputs, 1)
             total += val_labels.size(0)
             correct += (predicted == val_labels).sum().item()
+            
+        val_accuracy = 100 * correct / total
+        val_accuracies.append(val_accuracy)
+
 
 
     # Print the results for this epoch
@@ -126,16 +140,24 @@ model.eval()  # Set the model to evaluation mode
 test_loss = 0.0
 correct = 0
 total = 0
+
 with torch.no_grad():
     for test_images, test_labels in test_loader:
-        test_images, test_labels = test_images.to(device), test_labels.to(device)
+        test_images, test_labels = test_images.to(device), test_labels.to(device).float()
+        
+        # Forward pass
         test_outputs = model(test_images)
+        
+        # Accumulate test loss
         test_loss += criterion(test_outputs, test_labels).item()
 
+        # Get binary predictions (0 or 1) using threshold 0.5
+        predicted = (test_outputs > 0.5).float()
+
         # Calculate test accuracy
-        _, predicted = torch.max(test_outputs, 1)
         total += test_labels.size(0)
         correct += (predicted == test_labels).sum().item()
 
+# Compute test accuracy
 test_accuracy = 100 * correct / total
 print(f"Test Accuracy: {test_accuracy:.2f}%")
